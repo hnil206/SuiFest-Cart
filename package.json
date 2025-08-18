@@ -1,0 +1,50 @@
+{
+  "name": "next-15-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "author": {
+    "email": "pqhoang.dev@gmail.com",
+    "name": "HoangDevNull",
+    "url": "https://github.com/hoangdevnull"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint . --write",
+    "format:check": "biome format . ",
+    "format:fix": "biome format .  --write",
+    "type-check": "tsc --noEmit",
+    "postinstall": "husky"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.59.16",
+    "axios": "^1.7.7",
+    "clsx": "^2.1.1",
+    "next": "^15.0.2",
+    "next-auth": "^4.24.11",
+    "react": "19.0.0-rc-02c0e824-20241028",
+    "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@svgr/webpack": "^8.1.0",
+    "@tanstack/react-query-devtools": "^5.59.16",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "postcss": "^8",
+    "rimraf": "^6.0.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": ["pnpm lint:fix", "pnpm format:fix"]
+  }
+}
