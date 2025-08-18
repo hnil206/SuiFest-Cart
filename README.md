@@ -1,43 +1,104 @@
-## Intro <a name="intro"></a>
+# SuiFest Card Generator
 
-This boilerplate is made for creating NextJS application easier and faster.
+A Next.js application that allows users to authenticate with X (Twitter) and generate personalized card templates as PNG images.
 
-## Getting started: <a name="getting-started"></a>
+## Features
 
-1. When you're using Windows run this:
+- **X (Twitter) Authentication**: Secure login using OAuth 2.0
+- **Template Selection**: Choose from various pre-designed card templates
+- **Personalized Cards**: Templates automatically populate with user's name and X username
+- **PNG Export**: Generate and download cards as high-quality PNG images
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
-   - `git config --global core.eol lf`
-   - `git config --global core.autocrlf input`
+## How It Works
 
-   #### This will change eol(End of line) to the same as on Linux/Mac, without this, you will have conflicts with your teammates with those systems and our bash script won't work
+1. **Login**: Users authenticate with their X (Twitter) account
+2. **Profile Data**: System retrieves user's name, username, and avatar
+3. **Template Selection**: Users browse and select from available card templates
+4. **Customization**: Templates are automatically populated with user information
+5. **Generation**: Convert the customized template to a downloadable PNG image
 
-2. Clone this repository.
-3. Install pnpm globally: `npm install -g pnpm` (check your node version >= 18)
-4. Run `pnpm install`
+## Getting Started
 
----
+### Prerequisites
 
-### Run the development server
+- Node.js >= 18
+- pnpm package manager
+- X (Twitter) Developer Account with OAuth 2.0 credentials
+
+### Installation
+
+1. **Windows users only**: Configure git line endings
+
+   ```bash
+   git config --global core.eol lf
+   git config --global core.autocrlf input
+   ```
+
+2. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd SuiFest-Card
+   ```
+
+3. **Install pnpm globally** (if not already installed)
+
+   ```bash
+   npm install -g pnpm
+   ```
+
+4. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+5. **Environment Setup**
+   - Copy `.env.example` to `.env.local`
+   - Add your X (Twitter) OAuth credentials:
+     ```env
+     TWITTER_CLIENT_ID="your-twitter-client-id"
+     TWITTER_CLIENT_SECRET="your-twitter-client-secret"
+     NEXTAUTH_SECRET="your-nextauth-secret"
+     NEXTAUTH_URL="http://localhost:3000"
+     ```
+
+### Development
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 15 with App Router
+- **Authentication**: NextAuth.js with X (Twitter) Provider
+- **Styling**: Tailwind CSS
+- **Image Generation**: HTML Canvas to PNG conversion
+- **TypeScript**: Full type safety
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                 # Next.js app router pages
+├── components/          # React components
+│   └── auth/           # Authentication components
+├── api/                # API utilities and clients
+├── hooks/              # Custom React hooks
+└── types/              # TypeScript type definitions
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
----
+## License
 
-Made by [HoangDevNull](https://github.com/hoangdevnull)
+This project is licensed under the MIT License.
