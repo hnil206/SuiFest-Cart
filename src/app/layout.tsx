@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import Providers from './providers';
+import { Footer, Navbar } from '@/layout';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.appUrl),
@@ -60,7 +61,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
         suppressHydrationWarning
         className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable, fontMono.variable)}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <div data-testid='app-container' className='flex min-h-screen flex-col'>
+            <Navbar />
+            <main data-testid='main-content' className='flex grow flex-col overflow-clip'>
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );
