@@ -1,5 +1,6 @@
 'use client';
 
+import LoginButton from '@/components/auth/LoginButton';
 import html2canvas from 'html2canvas';
 import { useRef, useState } from 'react';
 
@@ -10,35 +11,28 @@ export default function Blackpink() {
   const handleCapture = async () => {
     if (captureRef.current) {
       const canvas = await html2canvas(captureRef.current);
-      setImage(canvas.toDataURL('image/png'));
+      const dataUrl = canvas.toDataURL('image/png'); // already includes data:image/png;base64,...
+      setImage(dataUrl); // keep full data URL
+      console.log(dataUrl, 'dataUrl');
     }
   };
 
   const tweetScreenshot = async () => {
     if (!image) return;
-    const res = await fetch('/api/twitter/tweet', {
+    const res = await fetch('/api/tweet', {
       method: 'POST',
-      body: (() => {
-        const fd = new FormData();
-        fd.append('file', dataURItoBlob(image), 'screenshot.png');
-        return fd;
-      })(),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ base64Image: image }),
     });
     const data = await res.json();
     alert('Tweeted! ' + JSON.stringify(data));
   };
 
-  const dataURItoBlob = (dataURI: string) => {
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-    return new Blob([ab], { type: mimeString });
-  };
-
   return (
     <div className='mx-auto max-w-2xl p-6'>
+      <LoginButton />
       <div ref={captureRef}>
         <h1 className='mb-6 font-bold text-3xl'>Blackpink</h1>
         <p>This section will be captured.</p>

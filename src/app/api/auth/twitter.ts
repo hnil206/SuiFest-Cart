@@ -12,8 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     response_type: 'code',
     client_id: process.env.TWITTER_CLIENT_ID!,
     redirect_uri: process.env.TWITTER_REDIRECT_URI!,
-    scope: 'tweet.read tweet.write users.read offline.access',
-    state: 'random_state_123',
+    scope: 'tweet.read tweet.write users.read user.write media.write',
+    state: 'state',
     code_challenge: challenge,
     code_challenge_method: 'S256',
   });

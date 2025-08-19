@@ -28,7 +28,8 @@
     "next-auth": "^4.24.11",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "twitter-api-sdk": "^1.2.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
