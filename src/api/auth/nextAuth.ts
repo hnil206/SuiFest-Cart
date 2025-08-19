@@ -29,10 +29,10 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      console.log('Redirect Callback - URL:', url, 'BaseURL:', baseUrl);
-      if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      return `${baseUrl}/`;
+      // console.log('Redirect Callback - URL:', url, 'BaseURL:', baseUrl);
+      // if (url.startsWith(baseUrl)) return url;
+      // if (url.startsWith('/')) return `${baseUrl}${url}`;
+      return '/blackpink';
     },
     async signIn({ user, account, profile }) {
       console.log('SignIn Callback - User:', user);
@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/auth',
     error: '/auth/error',
   },
   session: {
