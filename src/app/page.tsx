@@ -27,10 +27,11 @@ export default function HomePage() {
   // Determine what to display in the card preview
   const displayName = fullName || session?.user?.name || 'Your Name';
   const displayUsername = handle || session?.username || 'username';
+  const displayAvatar = avatar || session?.user?.image || 'https://pbs.twimg.com/150';
 
   const handleGenerate = () => {
     // Your generate logic here
-    console.log('Generating card with:', { displayName, displayUsername, avatar, template });
+    console.log('Generating card with:', { displayName, displayUsername, displayAvatar, template });
   };
 
   return (
@@ -42,7 +43,7 @@ export default function HomePage() {
             <CardPreview
               name={displayName}
               username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
-              avatarUrl={avatar}
+              avatarUrl={displayAvatar}
               template={template}
             />
           </div>
@@ -51,7 +52,7 @@ export default function HomePage() {
           <CardControlPanel
             fullName={fullName}
             handle={handle}
-            avatar={avatar}
+            avatar={displayAvatar}
             template={template}
             onFullNameChange={setFullName}
             onHandleChange={setHandle}
