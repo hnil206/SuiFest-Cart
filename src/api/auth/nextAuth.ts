@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from 'next-auth';
 import TwitterProvider from 'next-auth/providers/twitter';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -8,41 +9,46 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.TWITTER_CLIENT_SECRET!,
       version: '2.0',
     }),
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        token: { label: 'Token', type: 'text' },
+      },
+      async authorize(credentials) {
+        if (!credentials?.token) return null;
+        // Attach token on the user object; will be propagated in jwt callback
+        return { id: 'custom-credentials', token: credentials.token } as any;
+      },
+    }),
   ],
   callbacks: {
-    async jwt({ token, account, profile }) {
-      console.log('JWT Callback - Account:', account);
-      console.log('JWT Callback - Profile:', profile);
-      console.log('JWT Callback - Token:', token);
+    async jwt({ token, user, account }) {
+      // From Twitter OAuth
       if (account) {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
+        token.accessToken = account.access_token || token.accessToken;
+        token.refreshToken = account.refresh_token || token.refreshToken;
+      }
+      // From Credentials sign-in
+      if (user && (user as any).token) {
+        token.accessToken = (user as any).token;
       }
       return token;
     },
     async session({ session, token }) {
-      console.log('Session Callback - Session:', session);
-      console.log('Session Callback - Token:', token);
-      session.accessToken = token.accessToken;
-      session.refreshToken = token.refreshToken;
-      session.twitterId = token.sub;
+      (session as any).accessToken = token.accessToken as string | undefined;
+      (session as any).refreshToken = token.refreshToken as string | undefined;
+      (session as any).twitterId = token.sub as string | undefined;
       return session;
     },
     async redirect({ url, baseUrl }) {
-      console.log('Redirect Callback - URL:', url, 'BaseURL:', baseUrl);
-      if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      return `${baseUrl}/`;
+      return '/blackpink';
     },
     async signIn({ user, account, profile }) {
-      console.log('SignIn Callback - User:', user);
-      console.log('SignIn Callback - Account:', account);
-      console.log('SignIn Callback - Profile:', profile);
       return true;
     },
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/auth',
     error: '/auth/error',
   },
   session: {

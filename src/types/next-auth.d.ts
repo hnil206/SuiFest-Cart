@@ -6,6 +6,7 @@ declare module 'next-auth' {
     refreshToken?: string;
     twitterId?: string;
     username?: string;
+    twitterToken?: string;
   }
 }
 
