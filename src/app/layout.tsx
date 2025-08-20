@@ -1,3 +1,5 @@
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 import { fontMono, fontSans } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
@@ -60,7 +62,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
         suppressHydrationWarning
         className={cn('min-h-screen bg-black font-sans antialiased', fontSans.variable, fontMono.variable)}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

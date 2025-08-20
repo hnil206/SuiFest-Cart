@@ -1,6 +1,3 @@
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
-
 interface InputProps {
   label: string;
   placeholder: string;
@@ -8,32 +5,53 @@ interface InputProps {
   id?: string;
   name?: string;
   type?: string;
-  className?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function Input({ label, placeholder, required, id, name, type, className }: InputProps) {
-  const [hasValue, setHasValue] = useState(false);
+export function Input({ label, placeholder, required, id, name, type, value, onChange }: InputProps) {
   const inputId = id || name || label.toLowerCase().replace(/\s+/g, '-');
+  const isFileInput = type === 'file';
+
+  if (isFileInput) {
+    return (
+      <div className='relative w-full'>
+        <input
+          type='file'
+          id={inputId}
+          name={name}
+          accept='image/*'
+          onChange={onChange}
+          className='absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0'
+        />
+        <div className='flex h-[60px] w-full items-center justify-between rounded-full border-2 border-white/20 bg-transparent px-6 py-4'>
+          <span className='text-base text-white'>{value ? 'profilepicture.jpg' : placeholder}</span>
+          <button
+            type='button'
+            className='rounded-full bg-white/20 px-6 py-2 font-medium text-sm text-white transition-colors hover:bg-white/30'
+          >
+            Change
+          </button>
+        </div>
+        <label htmlFor={inputId} className='-top-2 absolute left-6 bg-[#0F0F0F] px-2 text-[#868686] text-sm'>
+          {label} {required && <span className='text-red-500'>*</span>}
+        </label>
+      </div>
+    );
+  }
 
   return (
-    <div className='group relative w-full'>
+    <div className='relative w-full max-w-md'>
       <input
         type={type || 'text'}
         id={inputId}
         name={name}
         placeholder={placeholder}
-        required={required}
-        onChange={(e) => setHasValue(e.target.value !== '')}
-        className={cn(
-          'h-12 w-full rounded-full border bg-white/5 px-5 text-white outline-none transition-all placeholder:text-white/40 disabled:opacity-50',
-          hasValue ? 'border-transparent' : 'border-white/15 focus:border-white/40',
-          className
-        )}
+        value={value}
+        onChange={onChange}
+        className='h-[60px] w-[198px] rounded-2xl border-2 border-white/5 bg-transparent px-4 py-3 text-white placeholder:text-gray-500 focus:border-white/5 focus:outline-none'
       />
-      <label
-        htmlFor={inputId}
-        className='-top-3 pointer-events-none absolute left-2 z-10 rounded px-2 py-0.5 text-white text-xs'
-      >
+      <label htmlFor={inputId} className='-top-2 absolute left-3 bg-[#0F0F0F] px-2 text-[#868686] text-sm'>
         {label} {required && <span className='text-red-500'>*</span>}
       </label>
     </div>

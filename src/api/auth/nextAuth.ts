@@ -7,42 +7,35 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.TWITTER_CLIENT_ID!,
       clientSecret: process.env.TWITTER_CLIENT_SECRET!,
       version: '2.0',
-      authorization: {
-        params: {
-          scope: 'tweet.read users.read offline.access',
-        },
-      },
     }),
   ],
   callbacks: {
     async jwt({ token, account, profile }) {
-      if (account && profile) {
+      console.log('JWT Callback - Account:', account);
+      console.log('JWT Callback - Profile:', profile);
+      console.log('JWT Callback - Token:', token);
+      if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
-        
-        // Extract username from Twitter OAuth profile
-        if (profile && 'data' in profile && profile.data) {
-          const profileData = profile.data as any;
-          if (profileData.username) {
-            token.username = profileData.username;
-          }
-        }
-      } else {
-        console.log('Session refresh');
       }
-    
+      // Store the username from the Twitter profile
+      if (profile?.data?.username) {
+        token.username = profile.data.username;
+      }
       return token;
     },
     async session({ session, token }) {
+      console.log('Session Callback - Session:', session);
+      console.log('Session Callback - Token:', token);
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.twitterId = token.sub;
-      if(token.username){
-        session.username = token.username;
-      }
+      // Add the username to the session with @ prefix
+      session.username = token.username ? `@${token.username}` : null;
       return session;
     },
     async redirect({ url, baseUrl }) {
+      console.log('Redirect Callback - URL:', url, 'BaseURL:', baseUrl);
       if (url.startsWith(baseUrl)) return url;
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       return `${baseUrl}/`;
