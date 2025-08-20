@@ -35,6 +35,12 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      console.log('Session Callback - Session:', session);
+      console.log('Session Callback - Token:', token);
+      session.accessToken = token.accessToken;
+      session.refreshToken = token.refreshToken;
+      session.twitterId = token.sub;
+      // Add the username to the session with @ prefix
       (session as any).accessToken = token.accessToken as string | undefined;
       (session as any).refreshToken = token.refreshToken as string | undefined;
       (session as any).twitterId = token.sub as string | undefined;

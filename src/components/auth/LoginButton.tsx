@@ -4,10 +4,11 @@ import { useSearchParams } from 'next/navigation';
 
 export default function LoginButton() {
   const { data: session, status } = useSession();
-  console.log(session?.twitterId, 'sssss');
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
-  const userId = session?.twitterId;
+  const username = session?.username;
+  console.log(session?.twitterId, 'sssss');
+  console.log(username, 'username');
   if (status === 'loading') {
     return <div className='px-4 py-2 text-gray-600'>Loading...</div>;
   }
@@ -31,7 +32,8 @@ export default function LoginButton() {
           {session.user?.image && (
             <img src={session.user.image} alt={session.user.name || 'User'} className='h-8 w-8 rounded-full' />
           )}
-          <span className='font-medium text-sm'>Welcome, {session.user?.name || 'User'}!</span>
+          <div>ID: {session?.twitterId}</div>
+          <span className='font-medium text-sm'>Welcome, {username || 'User'}!</span>
         </div>
         <button
           onClick={() => signOut()}
