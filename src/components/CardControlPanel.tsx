@@ -48,41 +48,61 @@ export function CardControlPanel(props: CardControlPanelProps) {
   };
 
   return (
-    <div className='rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md'>
+    <div className='h-[778px] w-[484px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-6'>
       <h2 className='font-semibold text-3xl leading-tight'>Create your own #SuiFest2025 Card</h2>
 
-      <div className='mt-6 space-y-6'>
+      <div className='mt-12 space-y-6'>
         <div>
-          <p className='mb-3 font-medium text-sm text-white/70'>Display information</p>
+          <p className='mb-[23px] font-medium text-md text-white/70'>Display information</p>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div className='space-y-2'>
-              <Input id='full-name' label='Full Name' placeholder='eg: Jerome Krel' required />
+              <Input
+                id='full-name'
+                label='Full Name'
+                placeholder='eg: Jerome Krel'
+                required
+                value={fullName}
+                onChange={(e) => onFullNameChange(e.target.value)}
+              />
             </div>
             <div className='space-y-2'>
-              <Input id='handle' label='X handle' placeholder='eg: hagen.web3' required />
+              <Input
+                id='handle'
+                label='X handle'
+                placeholder='eg: hagen.web3'
+                required
+                value={handle}
+                onChange={(e) => onHandleChange(e.target.value)}
+              />
             </div>
           </div>
         </div>
 
         <div className='space-y-3'>
           <div className='flex items-center gap-3'>
-            <div className='flex min-w-0 flex-1 items-center rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80'>
-              <span className='truncate'>{avatar ? 'uploaded-image' : 'No file chosen'}</span>
-            </div>
-            <input ref={fileInputRef} type='file' accept='image/*' onChange={onFileChange} className='hidden' />
-            <Button onClick={onPickFile} className='h-10 rounded-2xl px-5'>
-              Change
-            </Button>
+            <Input
+              id='profile-picture'
+              label='Profile Picture'
+              placeholder='No file chosen'
+              type='file'
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => onAvatarChange(String(reader.result));
+                reader.readAsDataURL(file);
+              }}
+            />
+            {avatar && (
+              <button
+                type='button'
+                className='ml-4 text-sm text-white/60 underline underline-offset-4 hover:text-white'
+                onClick={() => onAvatarChange(null)}
+              >
+                Remove
+              </button>
+            )}
           </div>
-          {avatar && (
-            <button
-              type='button'
-              className='text-sm text-white/60 underline underline-offset-4 hover:text-white'
-              onClick={() => onAvatarChange(null)}
-            >
-              Remove uploaded photo
-            </button>
-          )}
         </div>
 
         <div className='space-y-3'>

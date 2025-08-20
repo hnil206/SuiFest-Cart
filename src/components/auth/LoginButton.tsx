@@ -1,16 +1,13 @@
 'use client';
-
-import { useXUser } from '@/hooks/useXUser';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 
 export default function LoginButton() {
   const { data: session, status } = useSession();
-  console.log(session?.twitterId, 'sssss');
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
-  const userId = session?.twitterId;
-  const { user, loading, error: userError, username } = useXUser(userId || null);
+  const username = session?.username;
+  console.log(session?.twitterId, 'sssss');
   console.log(username, 'username');
   if (status === 'loading') {
     return <div className='px-4 py-2 text-gray-600'>Loading...</div>;
@@ -36,7 +33,7 @@ export default function LoginButton() {
             <img src={session.user.image} alt={session.user.name || 'User'} className='h-8 w-8 rounded-full' />
           )}
           <div>ID: {session?.twitterId}</div>
-          <span className='font-medium text-sm'>Welcome, {session.user?.name || 'User'}!</span>
+          <span className='font-medium text-sm'>Welcome, {username || 'User'}!</span>
         </div>
         <button
           onClick={() => signOut()}
