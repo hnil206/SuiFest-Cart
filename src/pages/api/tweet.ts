@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log(token, 'token');
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
   try {
-    const { base64Image } = req.body;
+    const { base64Image, text } = req.body;
     const realUrl = base64Image.replace('data:image/png;base64,', '');
     const mediaRes = await axios.post(
       'https://api.twitter.com/2/media/upload',
@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const tweetRes = await axios.post(
       'https://api.twitter.com/2/tweets',
       {
-        text: 'Check out this screenshot! #Blackpink',
+        text: text || 'Check out this screenshot! #Blackpink',
         media: { media_ids: [mediaId] },
       },
       {

@@ -1,5 +1,6 @@
 'use client';
 
+import getAuthUrl from '@/pages/api/getAuthCode';
 import exChangeXToken from '@/utils/exChangeXToken';
 import html2canvas from 'html2canvas';
 import { signIn } from 'next-auth/react';
@@ -12,20 +13,9 @@ export default function Blackpink() {
   const captureRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [text, setText] = useState('');
 
   // Build X OAuth URL
-  const getAuthUrl = () => {
-    const params = new URLSearchParams({
-      response_type: 'code',
-      client_id: process.env.TWITTER_CLIENT_ID!,
-      redirect_uri: process.env.TWITTER_REDIRECT_URI!,
-      scope: 'tweet.write tweet.read users.read media.write',
-      state: 'state',
-      code_challenge: 'challenge',
-      code_challenge_method: 'plain',
-    });
-    return `https://x.com/i/oauth2/authorize?${params.toString()}`;
-  };
 
   // On load, if code exists, exchange, sign-in (credentials), then clean URL
   useEffect(() => {
@@ -37,6 +27,7 @@ export default function Blackpink() {
         if (resp?.accessToken) {
           await signIn('credentials', { redirect: false, token: resp.accessToken });
         }
+        console.log(resp, 'resp');
       } catch (e) {
         console.error('Failed to exchange code for token', e);
       } finally {
@@ -76,7 +67,7 @@ export default function Blackpink() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ base64Image: image }),
+      body: JSON.stringify({ base64Image: image, text }),
     });
     const data = await res.json();
     if (!res.ok) {
@@ -117,7 +108,13 @@ export default function Blackpink() {
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
           <div className='relative w-full max-w-lg rounded-lg bg-white p-4 shadow-lg'>
             <h2 className='mb-4 font-semibold text-xl'>Tweet Screenshot</h2>
-            <input type='text' placeholder='Enter tweet text' className='w-full rounded border p-2' />
+            <input
+              type='text'
+              placeholder='Enter tweet text'
+              className='w-full rounded border p-2'
+              onChange={(e) => setText(e.target.value)}
+              value={text}
+            />
             <button onClick={tweetScreenshot} className='mt-4 rounded bg-blue-500 px-4 py-2 text-white'>
               Tweet
             </button>
