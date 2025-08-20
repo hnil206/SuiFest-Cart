@@ -1,7 +1,7 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
-
 interface Token {
   accessToken: string;
   refreshToken: string;
@@ -14,6 +14,7 @@ export default function Blackpink() {
   return (
     <div className='mx-auto max-w-2xl p-6'>
       <h1 className='mb-6 font-bold text-3xl'>Blackpink</h1>
+      <Button>Button</Button>
     </div>
   );
 }
