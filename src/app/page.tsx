@@ -3,11 +3,15 @@
 import { CardControlPanel, type TemplateKey } from '@/components/CardControlPanel';
 import { CardPreview } from '@/components/CardPreview';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useContext, useEffect, useState } from 'react';
+import CardContext from './store/card-providers';
 
 export default function HomePage() {
   const { data: session } = useSession();
-
+  const context = useContext(CardContext);
+  const { state, setState } = context;
+  const router = useRouter();
   // State for card data
   const [fullName, setFullName] = useState('');
   const [handle, setHandle] = useState('');
@@ -27,10 +31,15 @@ export default function HomePage() {
   // Determine what to display in the card preview
   const displayName = fullName || session?.user?.name || 'Your Name';
   const displayUsername = handle || session?.username || 'username';
-  const displayAvatar = avatar || session?.user?.image || 'https://pbs.twimg.com/150';
+
+  // Process session image URL to remove _large suffix
+  const processedSessionImage = session?.user?.image ? session.user.image.replace('_normal', '') : null;
+
+  const displayAvatar = avatar || processedSessionImage || 'https://pbs.twimg.com/150';
 
   const handleGenerate = () => {
-    // Your generate logic here
+    setState({ image: displayAvatar, name: displayName, username: displayUsername });
+    router.push('/preview');
     console.log('Generating card with:', { displayName, displayUsername, displayAvatar, template });
   };
 
@@ -45,6 +54,7 @@ export default function HomePage() {
               username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
               avatarUrl={displayAvatar}
               template={template}
+              className='rounded-[28px]'
             />
           </div>
 

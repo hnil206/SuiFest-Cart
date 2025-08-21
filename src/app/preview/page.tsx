@@ -1,5 +1,6 @@
 'use client';
 
+import AvailableCard from '@/components/AvailableCard';
 import { CardPreview } from '@/components/CardPreview';
 import { Button } from '@/components/ui/button';
 import { DialogFooter, DialogHeader } from '@/components/ui/dialog';
@@ -17,16 +18,25 @@ import {
 import html2canvas from 'html2canvas';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import CardContext from '../store/card-providers';
 
 const PreviewPage = () => {
   const { data: session } = useSession();
-  const displayName = session?.user?.name || 'Your Name';
-  const displayUsername = session?.username || 'username';
-  const displayAvatar = session?.user?.image || 'https://pbs.twimg.com/150';
-
   const router = useRouter();
   const searchParams = useSearchParams();
+  const context = useContext(CardContext);
+  const { state } = context;
+  // Get data from URL params or fall back to session
+  const displayName = searchParams?.get('name') || session?.user?.name || 'Your Name';
+  const displayUsername = searchParams?.get('username') || session?.username || 'username';
+
+  // Process session image URL to remove _large suffix
+  const processedSessionImage = session?.user?.image ? session.user.image.replace('_normal', '') : null;
+
+  const displayAvatar = searchParams?.get('avatar') || processedSessionImage || 'https://pbs.twimg.com/150';
+  const template = (searchParams?.get('template') as 'navy' | 'purple' | 'brown') || 'navy';
+
   const captureRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +58,7 @@ const PreviewPage = () => {
     const statusRes = await fetch('/api/auth/status', { cache: 'no-store' });
     const status = statusRes.ok ? await statusRes.json() : null;
     if (status?.authenticated) return true;
-    window.location.href = getAuthUrl();
+    router.push(getAuthUrl());
     return false;
   };
 
@@ -80,13 +90,16 @@ const PreviewPage = () => {
   return (
     <div>
       <div>
-        <div className='flex min-h-screen w-full bg-black px-6 py-10 text-white' ref={captureRef}>
-          <CardPreview
-            name={displayName}
-            username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
-            avatarUrl={displayAvatar}
-            template='navy'
-          />
+        <div className='flex w-full bg-black text-white'>
+          <div className='flex' ref={captureRef}>
+            <CardPreview
+              name={state.name}
+              username={state.username.startsWith('@') ? state.username.slice(1) : state.username}
+              avatarUrl={state.image}
+              template={template}
+            />
+            <AvailableCard />
+          </div>
         </div>
         <div className='flex items-center justify-center'>
           <h2>Share your newly generated SuiFest Card</h2>

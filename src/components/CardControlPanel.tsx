@@ -49,7 +49,7 @@ export function CardControlPanel(props: CardControlPanelProps) {
 
   return (
     <div className='h-[778px] w-[484px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-6'>
-      <h2 className='font-semibold text-3xl leading-tight'>Create your own #SuiFest2025 Card</h2>
+      <h2 className='font-semibold text-5xl leading-tight'>Create your own #SuiFest2025 Card</h2>
 
       <div className='mt-12 space-y-6'>
         <div>
@@ -125,7 +125,7 @@ export function CardControlPanel(props: CardControlPanelProps) {
         </div>
 
         <div className='flex justify-end pt-2'>
-          <Button onClick={onGenerate} className='h-12 rounded-2xl px-6'>
+          <Button onClick={onGenerate} className='h-12 rounded-2xl bg-white px-6 text-black'>
             Generate
           </Button>
         </div>
