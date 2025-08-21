@@ -1,9 +1,12 @@
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 import { fontMono, fontSans } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import Providers from './providers';
+import { CardProvider } from './store/card-providers';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.appUrl),
@@ -58,9 +61,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang='en'>
       <body
         suppressHydrationWarning
-        className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable, fontMono.variable)}
+        className={cn(
+          'flex min-h-screen flex-col bg-black font-sans antialiased',
+          fontSans.variable,
+          fontMono.variable
+        )}
       >
-        <Providers>{children}</Providers>
+        <CardProvider>
+          <Providers>
+            <Header />
+            <main className='flex-1'>{children}</main>
+            <Footer />
+          </Providers>
+        </CardProvider>
       </body>
     </html>
   );

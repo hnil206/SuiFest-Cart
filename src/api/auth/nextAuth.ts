@@ -4,42 +4,38 @@ import TwitterProvider from 'next-auth/providers/twitter';
 export const authOptions: NextAuthOptions = {
   providers: [
     TwitterProvider({
-      clientId: process.env.TWITTER_CLIENT_ID!,
+      clientId: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID!,
       clientSecret: process.env.TWITTER_CLIENT_SECRET!,
       version: '2.0',
-      authorization: {
-        params: {
-          scope: 'tweet.read users.read offline.access',
-        },
-      },
     }),
   ],
   callbacks: {
     async jwt({ token, account, profile }) {
-      if (account && profile) {
+      if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
-        
-        // Extract username from Twitter OAuth profile
-        if (profile && 'data' in profile && profile.data) {
-          const profileData = profile.data as any;
-          if (profileData.username) {
-            token.username = profileData.username;
-          }
-        }
-      } else {
-        console.log('Session refresh');
       }
-    
+
+      // Cast profile to expected structure for Twitter v2
+      const twitterProfile = profile as {
+        data?: {
+          username?: string;
+        };
+      };
+
+      if (twitterProfile?.data?.username) {
+        token.username = twitterProfile.data.username;
+      }
+
       return token;
     },
+
     async session({ session, token }) {
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.twitterId = token.sub;
-      if(token.username){
-        session.username = token.username;
-      }
+      // Add the username to the session with @ prefix
+      session.username = token.username ? `@${token.username}` : undefined;
       return session;
     },
     async redirect({ url, baseUrl }) {
@@ -48,9 +44,6 @@ export const authOptions: NextAuthOptions = {
       return `${baseUrl}/`;
     },
     async signIn({ user, account, profile }) {
-      console.log('SignIn Callback - User:', user);
-      console.log('SignIn Callback - Account:', account);
-      console.log('SignIn Callback - Profile:', profile);
       return true;
     },
   },

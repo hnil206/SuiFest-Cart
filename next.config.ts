@@ -27,6 +27,9 @@ const webpack = (config: any) => {
 };
 
 const nextConfig: NextConfig = {
+  images: {
+    domains: ['pbs.twimg.com'],
+  },
   reactStrictMode: false,
   output: 'standalone',
   experimental: {
