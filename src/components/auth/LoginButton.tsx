@@ -12,7 +12,7 @@ export default function LoginButton() {
   if (status === 'loading') {
     return <div className='px-4 py-2 text-gray-600'>Loading...</div>;
   }
-
+  console.log(session?.user?.image, 'session');
   if (error) {
     return (
       <div className='rounded-md bg-red-50 px-4 py-2 text-red-600'>
