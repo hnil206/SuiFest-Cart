@@ -48,10 +48,12 @@ export function CardControlPanel(props: CardControlPanelProps) {
   };
 
   return (
-    <div className='h-[778px] w-[484px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-6'>
-      <h2 className='font-semibold text-5xl leading-tight'>Create your own #SuiFest2025 Card</h2>
+    <div className='!w-[335px] sm:!w-[420px] md:!w-[520px] lg:!w-[668px] max-w-[484px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-4'>
+      <h2 className='font-semibold text-2xl leading-tight sm:text-3xl md:text-4xl'>
+        Create your own #SuiFest2025 Card
+      </h2>
 
-      <div className='mt-12 space-y-6'>
+      <div className='mt-8 space-y-6 md:mt-12'>
         <div>
           <p className='mb-[23px] font-medium text-md text-white/70'>Display information</p>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
@@ -93,7 +95,7 @@ export function CardControlPanel(props: CardControlPanelProps) {
                 reader.readAsDataURL(file);
               }}
             />
-            {avatar && (
+            {/* {avatar && (
               <button
                 type='button'
                 className='ml-4 text-sm text-white/60 underline underline-offset-4 hover:text-white'
@@ -101,21 +103,21 @@ export function CardControlPanel(props: CardControlPanelProps) {
               >
                 Remove
               </button>
-            )}
+            )} */}
           </div>
         </div>
 
         <div className='space-y-3'>
           <p className='font-medium text-sm text-white/70'>Card templates</p>
-          <div className='flex gap-4'>
+          <div className='flex gap-4 md:gap-6'>
             {templates.map((t) => (
               <button
                 key={t.key}
                 type='button'
                 onClick={() => onTemplateChange(t.key)}
                 className={
-                  'h-16 w-16 rounded-2xl border shadow-inner transition ' +
-                  (template === t.key ? 'ring-2 ring-white' : 'border-white/10 hover:border-white/30')
+                  'h-32 w-32 rounded-[32px] border shadow-inner transition ' +
+                  (template === t.key ? 'ring-2 ring-white/15' : 'border-white/10 hover:border-white/30')
                 }
                 style={{ backgroundColor: t.color }}
                 aria-label={`Template ${t.key}`}
@@ -125,7 +127,7 @@ export function CardControlPanel(props: CardControlPanelProps) {
         </div>
 
         <div className='flex justify-end pt-2'>
-          <Button onClick={onGenerate} className='h-12 rounded-2xl bg-white px-6 text-black'>
+          <Button onClick={onGenerate} className='h-12 w-full rounded-2xl bg-white px-6 text-black md:w-auto'>
             Generate
           </Button>
         </div>

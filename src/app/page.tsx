@@ -38,15 +38,16 @@ export default function HomePage() {
   const displayAvatar = avatar || processedSessionImage || 'https://pbs.twimg.com/150';
 
   const handleGenerate = () => {
+    console.log(displayAvatar, '=============================');
     setState({ image: displayAvatar, name: displayName, username: displayUsername });
     router.push('/preview');
     console.log('Generating card with:', { displayName, displayUsername, displayAvatar, template });
   };
 
   return (
-    <div className='min-h-screen w-full bg-black px-6 py-10 text-white'>
-      <div className='mx-auto max-w-[1200px]'>
-        <div className='grid gap-8 md:grid-cols-[1fr_420px]'>
+    <div className='min-h-screen w-full bg-black px-4 py-10 text-white md:px-6'>
+      <div className='mx-auto w-full max-w-[335px] md:max-w-[1200px]'>
+        <div className='grid gap-6 md:grid-cols-[1fr_420px] md:gap-8'>
           {/* Preview */}
           <div className='flex items-start justify-center md:justify-start'>
             <CardPreview
@@ -54,7 +55,7 @@ export default function HomePage() {
               username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
               avatarUrl={displayAvatar}
               template={template}
-              className='rounded-[28px]'
+              className='w-full max-w-[668px] rounded-[28px]'
             />
           </div>
 

@@ -47,7 +47,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  width: 1,
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     // { media: '(prefers-color-scheme: dark)', color: 'black' },
@@ -61,12 +63,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang='en'>
       <body
         suppressHydrationWarning
-        className={cn('min-h-screen bg-black font-sans antialiased', fontSans.variable, fontMono.variable)}
+        className={cn(
+          'flex min-h-screen flex-col bg-black font-sans antialiased',
+          fontSans.variable,
+          fontMono.variable
+        )}
       >
         <CardProvider>
           <Providers>
             <Header />
-            {children}
+            <main className='flex-1'>{children}</main>
             <Footer />
           </Providers>
         </CardProvider>

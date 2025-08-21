@@ -27,14 +27,9 @@ const PreviewPage = () => {
   const searchParams = useSearchParams();
   const context = useContext(CardContext);
   const { state } = context;
-  // Get data from URL params or fall back to session
-  const displayName = searchParams?.get('name') || session?.user?.name || 'Your Name';
-  const displayUsername = searchParams?.get('username') || session?.username || 'username';
 
   // Process session image URL to remove _large suffix
-  const processedSessionImage = session?.user?.image ? session.user.image.replace('_normal', '') : null;
 
-  const displayAvatar = searchParams?.get('avatar') || processedSessionImage || 'https://pbs.twimg.com/150';
   const template = (searchParams?.get('template') as 'navy' | 'purple' | 'brown') || 'navy';
 
   const captureRef = useRef<HTMLDivElement>(null);
@@ -86,11 +81,15 @@ const PreviewPage = () => {
     });
     const data = await res.json();
   };
+  console.log(
+    state,
+    '[-----------------------------------------------------------------------------------------------'
+  );
 
   return (
     <div>
       <div>
-        <div className='flex w-full bg-black text-white'>
+        <div className='flex w-full justify-center bg-black p-8 text-white'>
           <div className='flex' ref={captureRef}>
             <CardPreview
               name={state.name}

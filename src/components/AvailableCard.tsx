@@ -17,15 +17,15 @@ export const AvailableCard = ({
 
   return (
     <div
-      className={`relative h-[668px] w-[600px] overflow-hidden rounded-r-[32px] ${
+      className={`relative aspect-[668/600] w-[320px] overflow-hidden rounded-[24px] sm:w-[420px] md:w-[520px] md:rounded-r-[32px] md:rounded-l-none lg:w-[600px] ${
         isLight ? 'bg-gray-100' : 'bg-gray-900'
       } ${className}`}
     >
       {/* Header section */}
-      <div className='px-8 pt-6 pb-4'>
+      <div className='px-5 pt-5 pb-4 sm:px-6 md:px-8 md:pt-6'>
         <div className='flex items-start justify-between pt-5'>
           <div>
-            <p className={`mb-1 font-medium text-md ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>Date</p>
+            <p className={`mb-1 font-medium text-sm sm:text-md ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>Date</p>
           </div>
 
           <div className='text-right'>
@@ -35,16 +35,18 @@ export const AvailableCard = ({
         {/* Divider line */}
         <div className={`mt-4 h-px w-full ${isLight ? 'bg-gray-300' : 'bg-gray-600'}`}></div>
         <div className='flex justify-between pt-4'>
-          <div className={`font-bold text-2xl leading-tight ${isLight ? 'text-black' : 'text-white'}`}>{date}</div>
+          <div className={`font-bold text-xl leading-tight sm:text-2xl ${isLight ? 'text-black' : 'text-white'}`}>
+            {date}
+          </div>
 
-          <div className={`font-bold text-2xl ${isLight ? 'text-black' : 'text-white'}`}>{destination}</div>
+          <div className={`font-bold text-xl sm:text-2xl ${isLight ? 'text-black' : 'text-white'}`}>{destination}</div>
         </div>
       </div>
 
       {/* SuiFest logo */}
-      <div className='absolute right-8 bottom-8 left-8'>
+      <div className='absolute right-6 bottom-6 left-6 sm:right-8 sm:bottom-8 sm:left-8'>
         <div className={isLight ? 'text-black' : 'text-white'}>
-          <span className='font-black text-9xl tracking-tight'>SuiFest</span>
+          <span className='font-black text-6xl tracking-tight sm:text-8xl lg:text-9xl'>SuiFest</span>
         </div>
       </div>
     </div>
