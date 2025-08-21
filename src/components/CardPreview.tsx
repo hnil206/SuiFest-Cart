@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 
 interface CardProps {
   name: string;
@@ -30,11 +31,14 @@ export const CardPreview = ({ name, username, avatarUrl, className, template = '
         <div>
           <div className='relative flex h-32 w-32 items-center justify-center overflow-hidden bg-neutral-300 text-black sm:h-72 sm:w-72 md:h-[300px] md:w-[300px] lg:h-[345px] lg:w-[345px]'>
             {avatarUrl ? (
-              <img
+              <Image
                 src={avatarUrl}
                 alt='Profile'
-                crossOrigin='anonymous'
-                className='absolute inset-0 h-full w-full object-cover'
+                fill
+                sizes='(min-width: 1024px) 345px, (min-width: 768px) 300px, (min-width: 640px) 288px, 128px'
+                className='object-cover'
+                priority
+                unoptimized={!!avatarUrl && avatarUrl.startsWith('data:')}
               />
             ) : (
               <span className='font-medium text-sm'>Profile Picture</span>

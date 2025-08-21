@@ -81,10 +81,6 @@ const PreviewPage = () => {
     });
     const data = await res.json();
   };
-  console.log(
-    state,
-    '[-----------------------------------------------------------------------------------------------'
-  );
 
   return (
     <div>
