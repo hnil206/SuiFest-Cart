@@ -32,12 +32,11 @@ export default function LoginButton() {
           {session.user?.image && (
             <img src={session.user.image} alt={session.user.name || 'User'} className='h-8 w-8 rounded-full' />
           )}
-          <div>ID: {session?.twitterId}</div>
           <span className='font-medium text-sm'>Welcome, {username || 'User'}!</span>
         </div>
         <button
           onClick={() => signOut()}
-          className='rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700'
+          className='rounded-md bg-red-600 px-4 py-2 font-medium text-sm text-white hover:bg-red-700'
         >
           Sign Out
         </button>
@@ -48,7 +47,7 @@ export default function LoginButton() {
   return (
     <button
       onClick={() => signIn('twitter')}
-      className='rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700'
+      className='rounded-md bg-blue-600 px-4 py-2 font-medium text-sm text-white hover:bg-blue-700'
     >
       Sign in with X
     </button>
