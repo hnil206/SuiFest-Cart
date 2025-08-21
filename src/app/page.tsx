@@ -42,7 +42,6 @@ export default function HomePage() {
     router.push('/preview');
     console.log('Generating card with:', { displayName, displayUsername, displayAvatar, template });
   };
-
   return (
     <div className='flex min-h-[calc(100vh-120px)] items-center'>
       <div className='h-full w-full items-center px-6 py-10 text-white'>

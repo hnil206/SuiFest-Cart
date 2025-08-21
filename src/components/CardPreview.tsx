@@ -30,10 +30,17 @@ export const CardPreview = ({ name, username, avatarUrl, className, template = '
       <div className='flex items-center justify-center px-3 py-2 sm:px-6 sm:py-4 lg:px-8 lg:py-6'>
         <div>
           <div
-            className={`relative flex h-[140px] w-[140px] items-center justify-center bg-neutral-300 text-black sm:h-[300px] sm:w-[300px] lg:h-[345px] lg:w-[345px] ${className}`}
+            className={`relative flex h-[140px] w-[140px] items-center justify-center overflow-hidden rounded-lg bg-neutral-300 text-black sm:h-[300px] sm:w-[300px] lg:h-[345px] lg:w-[345px]`}
           >
             {avatarUrl ? (
-              <Image src={avatarUrl} alt='Profile' fill className='h-full w-full object-cover' />
+              <Image
+                src={avatarUrl}
+                alt='Profile'
+                fill
+                className='object-cover'
+                sizes='(max-width: 640px) 140px, (max-width: 1024px) 300px, 345px'
+                priority
+              />
             ) : (
               <span className='font-medium text-xs sm:text-sm'>Profile Picture</span>
             )}
