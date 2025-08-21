@@ -3,12 +3,12 @@ import axios from 'axios';
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID || 'TzdVNWh0dWJvaUI2WUJIT1JvWnM6MTpjaQ';
 // Use the same redirect URI as the client page handling the code (Blackpink page)
-const REDIRECT_URI = process.env.NEXT_PUBLIC_TWITTER_REDIRECT_URI || 'http://localhost:3000/';
+const REDIRECT_URI = process.env.NEXT_PUBLIC_TWITTER_REDIRECT_URI || 'http://localhost:3000/preview';
 
 export async function POST(request: Request) {
   try {
     const { code } = await request.json();
-
+    console.log(code, 'code');
     if (!code) {
       return NextResponse.json({ error: 'Authorization code is required' }, { status: 400 });
     }

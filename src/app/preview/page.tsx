@@ -38,43 +38,37 @@ const PreviewPage = () => {
     if (!code) return;
     (async () => {
       try {
-        const resp = await exChangeXToken({ code });
+        await exChangeXToken({ code });
       } catch (e) {
         console.error('Failed to exchange code for token', e);
-      } finally {
-        router.replace('/');
       }
     })();
   }, [searchParams, router]);
 
   const ensureAuthenticated = async (): Promise<boolean> => {
-    // Check cookie-based auth status
     const statusRes = await fetch('/api/auth/status', { cache: 'no-store' });
-    alert(JSON.stringify(statusRes));
     const status = statusRes.ok ? await statusRes.json() : null;
     if (status?.authenticated) return true;
-    // No token: redirect to X OAuth
     window.location.href = getAuthUrl();
     return false;
   };
 
   const handleCapture = async () => {
-    // Ensure the user is authenticated before allowing capture (and subsequent tweet)
     const ok = await ensureAuthenticated();
     if (!ok) return;
-
+    console.log(captureRef.current, 'captureRef');
     if (captureRef.current) {
       const canvas = await html2canvas(captureRef.current);
+      console.log(canvas, 'canvas');
       const dataUrl = canvas.toDataURL('image/png');
       setImage(dataUrl);
     }
   };
 
   const tweetScreenshot = async () => {
-    // Double-check auth before tweeting in case session changed
     const ok = await ensureAuthenticated();
     if (!ok || !image) return;
-    const res = await fetch('/api/tweet', {
+    const res = await fetch('/api/twitter/post-tweet', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -82,25 +76,22 @@ const PreviewPage = () => {
       body: JSON.stringify({ base64Image: image, text }),
     });
     const data = await res.json();
-    if (!res.ok) {
-      alert('Failed: ' + JSON.stringify(data));
-    } else {
-      alert('Tweeted! ' + JSON.stringify(data));
-    }
   };
 
   return (
     <div>
-      <div className='flex min-h-screen w-full bg-black px-6 py-10 text-white'>
-        <CardPreview
-          name={displayName}
-          username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
-          avatarUrl={displayAvatar}
-          template='navy'
-        />
-      </div>
-      <div className='flex items-center justify-center'>
-        <h2>Share your newly generated SuiFest Card</h2>
+      <div>
+        <div className='flex min-h-screen w-full bg-black px-6 py-10 text-white' ref={captureRef}>
+          <CardPreview
+            name={displayName}
+            username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
+            avatarUrl={displayAvatar}
+            template='navy'
+          />
+        </div>
+        <div className='flex items-center justify-center'>
+          <h2>Share your newly generated SuiFest Card</h2>
+        </div>
       </div>
       <div className='flex items-center justify-center'>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -110,7 +101,7 @@ const PreviewPage = () => {
             </Button>
           </DialogTrigger>
 
-          <DialogContent className='sm:max-w-md'>
+          <DialogContent className='fixed inset-0 z-50 flex items-center justify-center sm:max-w-md'>
             <DialogHeader>
               <DialogTitle>Share link</DialogTitle>
               <DialogDescription>Anyone who has this link will be able to view this.</DialogDescription>
@@ -120,22 +111,27 @@ const PreviewPage = () => {
                 <Label htmlFor='link' className='sr-only'>
                   Link
                 </Label>
+                {image && (
+                  <img src={image} alt='screenshot' className='h-auto max-h-[300px] w-full rounded-md object-contain' />
+                )}
                 <Input
                   label='Link'
                   id='link'
                   placeholder='https://ui.shadcn.com/docs/installation'
-                  value={image || ''}
-                  onChange={(e) => setImage(e.target.value)}
+                  value={text || ''}
+                  onChange={(e) => setText(e.target.value)}
                 />
               </div>
             </div>
             <DialogFooter className='sm:justify-start'>
-              <DialogClose asChild>
-                <Button type='button' variant='secondary'>
-                  Close
-                </Button>
+              <div className='flex gap-2'>
+                <DialogClose asChild>
+                  <Button type='button' variant='secondary'>
+                    Close
+                  </Button>
+                </DialogClose>
                 <Button onClick={tweetScreenshot}>Tweet</Button>
-              </DialogClose>
+              </div>
             </DialogFooter>
           </DialogContent>
         </Dialog>
