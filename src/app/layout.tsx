@@ -4,6 +4,7 @@ import { fontMono, fontSans } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import type { Metadata, Viewport } from 'next';
+import { Toaster } from 'sonner';
 import './globals.css';
 import Providers from './providers';
 import { CardProvider } from './store/card-providers';
@@ -71,6 +72,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Providers>
             <Header />
             <main className='flex-1'>{children}</main>
+            <Toaster />
             <Footer />
           </Providers>
         </CardProvider>

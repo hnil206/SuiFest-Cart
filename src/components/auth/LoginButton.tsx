@@ -28,12 +28,6 @@ export default function LoginButton() {
   if (session) {
     return (
       <div className='flex items-center gap-4'>
-        <div className='flex items-center gap-2'>
-          {session.user?.image && (
-            <img src={session.user.image} alt={session.user.name || 'User'} className='h-8 w-8 rounded-full' />
-          )}
-          <span className='font-medium text-sm'>Welcome, {username || 'User'}!</span>
-        </div>
         <button
           onClick={() => signOut()}
           className='rounded-md bg-red-600 px-4 py-2 font-medium text-sm text-white hover:bg-red-700'

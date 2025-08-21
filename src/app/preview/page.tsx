@@ -19,6 +19,7 @@ import html2canvas from 'html2canvas';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import CardContext from '../store/card-providers';
 
 const PreviewPage = () => {
@@ -90,6 +91,7 @@ const PreviewPage = () => {
       return;
     } else {
       setIsModalOpen(true);
+      toast.success('Tweet posted successfully!');
       router.push('/');
     }
   };
@@ -167,7 +169,7 @@ const PreviewPage = () => {
                 </DialogClose>
                 <Button
                   onClick={tweetScreenshot}
-                  className='group relative overflow-hidden bg-gradient-to-r from-twitter to-blue-500 px-6 py-2.5 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-twitter/90 hover:to-blue-500/90 hover:shadow-xl focus:ring-2 focus:ring-twitter/30 disabled:cursor-not-allowed disabled:opacity-50'
+                  className='group relative overflow-hidden bg-gradient-to-r from-twitter to-blue-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-twitter/90 hover:to-blue-500/90 hover:shadow-xl focus:ring-2 focus:ring-twitter/30 disabled:cursor-not-allowed disabled:opacity-50'
                   disabled={!image}
                 >
                   <span className='relative z-10 flex items-center gap-2'>
