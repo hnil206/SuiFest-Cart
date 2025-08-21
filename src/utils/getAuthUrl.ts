@@ -1,14 +1,8 @@
-// Utility to build the X (Twitter) OAuth URL
 export default function getAuthUrl() {
-  const clientId = process.env.TWITTER_CLIENT_ID || process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID || '';
-  const redirectUri =
-    process.env.TWITTER_REDIRECT_URI ||
-    process.env.NEXT_PUBLIC_TWITTER_REDIRECT_URI ||
-    (typeof window !== 'undefined' ? `${window.location.origin}/` : '');
   const params = new URLSearchParams({
     response_type: 'code',
-    client_id: clientId,
-    redirect_uri: redirectUri,
+    client_id: process.env.NEXT_PUBLIC_TWITTER_CLIENT_ID!,
+    redirect_uri: process.env.NEXT_PUBLIC_TWITTER_REDIRECT_URI!,
     scope: 'tweet.write tweet.read users.read media.write',
     state: 'state',
     code_challenge: 'challenge',

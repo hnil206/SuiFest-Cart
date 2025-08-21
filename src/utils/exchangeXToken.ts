@@ -12,13 +12,12 @@ export default async function exChangeXToken({ code }: ExChangeXTokenProps): Pro
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code }),
   });
+
   if (!res.ok) {
     const err = await res.json().catch(() => undefined);
     throw new Error(err?.details || 'Failed to exchange token');
   }
   const data = await res.json();
-  console.log(res, 'dsa====================================================================');
-  // Persist token in httpOnly cookie on server (outside NextAuth namespace)
   await fetch('/api/twitter/set-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
