@@ -15,18 +15,27 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
       }
-      // Store the username from the Twitter profile
-      if (profile?.data?.username) {
-        token.username = profile.data.username;
+
+      // Cast profile to expected structure for Twitter v2
+      const twitterProfile = profile as {
+        data?: {
+          username?: string;
+        };
+      };
+
+      if (twitterProfile?.data?.username) {
+        token.username = twitterProfile.data.username;
       }
+
       return token;
     },
+
     async session({ session, token }) {
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.twitterId = token.sub;
       // Add the username to the session with @ prefix
-      session.username = token.username ? `@${token.username}` : null;
+      session.username = token.username ? `@${token.username}` : undefined;
       return session;
     },
     async redirect({ url, baseUrl }) {
