@@ -48,8 +48,8 @@ export function CardControlPanel(props: CardControlPanelProps) {
   };
 
   return (
-    <div className='h-[778px] w-[484px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-6'>
-      <h2 className='font-semibold text-5xl leading-tight'>Create your own #SuiFest2025 Card</h2>
+    <div className='h-full w-full max-w-[700px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-6'>
+      <h2 className='font-semibold text-2xl leading-tight lg:text-4xl'>Create your own #SuiFest2025 Card</h2>
 
       <div className='mt-12 space-y-6'>
         <div>
@@ -93,15 +93,6 @@ export function CardControlPanel(props: CardControlPanelProps) {
                 reader.readAsDataURL(file);
               }}
             />
-            {avatar && (
-              <button
-                type='button'
-                className='ml-4 text-sm text-white/60 underline underline-offset-4 hover:text-white'
-                onClick={() => onAvatarChange(null)}
-              >
-                Remove
-              </button>
-            )}
           </div>
         </div>
 
@@ -114,7 +105,7 @@ export function CardControlPanel(props: CardControlPanelProps) {
                 type='button'
                 onClick={() => onTemplateChange(t.key)}
                 className={
-                  'h-16 w-16 rounded-2xl border shadow-inner transition ' +
+                  'h-20 w-20 rounded-2xl border shadow-inner transition lg:h-32 lg:w-32 ' +
                   (template === t.key ? 'ring-2 ring-white' : 'border-white/10 hover:border-white/30')
                 }
                 style={{ backgroundColor: t.color }}

@@ -44,32 +44,34 @@ export default function HomePage() {
   };
 
   return (
-    <div className='min-h-screen w-full bg-black px-6 py-10 text-white'>
-      <div className='mx-auto max-w-[1200px]'>
-        <div className='grid gap-8 md:grid-cols-[1fr_420px]'>
-          {/* Preview */}
-          <div className='flex items-start justify-center md:justify-start'>
-            <CardPreview
-              name={displayName}
-              username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
-              avatarUrl={displayAvatar}
+    <div className='flex min-h-[calc(100vh-120px)] items-center'>
+      <div className='h-full w-full items-center px-6 py-10 text-white'>
+        <div className='mx-auto max-w-[1200px]'>
+          <div className='grid gap-8 md:grid-cols-[1fr_420px]'>
+            {/* Preview */}
+            <div className='flex items-start justify-center md:justify-start'>
+              <CardPreview
+                name={displayName}
+                username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
+                avatarUrl={displayAvatar}
+                template={template}
+                className='h-full w-full rounded-[28px]'
+              />
+            </div>
+
+            {/* Control Panel */}
+            <CardControlPanel
+              fullName={fullName}
+              handle={handle}
+              avatar={displayAvatar}
               template={template}
-              className='rounded-[28px]'
+              onFullNameChange={setFullName}
+              onHandleChange={setHandle}
+              onAvatarChange={setAvatar}
+              onTemplateChange={setTemplate}
+              onGenerate={handleGenerate}
             />
           </div>
-
-          {/* Control Panel */}
-          <CardControlPanel
-            fullName={fullName}
-            handle={handle}
-            avatar={displayAvatar}
-            template={template}
-            onFullNameChange={setFullName}
-            onHandleChange={setHandle}
-            onAvatarChange={setAvatar}
-            onTemplateChange={setTemplate}
-            onGenerate={handleGenerate}
-          />
         </div>
       </div>
     </div>

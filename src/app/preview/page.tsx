@@ -85,13 +85,20 @@ const PreviewPage = () => {
       body: JSON.stringify({ base64Image: image, text }),
     });
     const data = await res.json();
+    if (data.error) {
+      console.error('Error posting tweet:', data.error);
+      return;
+    } else {
+      setIsModalOpen(true);
+      router.push('/');
+    }
   };
 
   return (
-    <div>
-      <div>
-        <div className='flex w-full bg-black text-white'>
-          <div className='flex' ref={captureRef}>
+    <div className='flex min-h-[calc(100vh-120px)] flex-col items-center justify-center'>
+      <div className='flex w-full bg-black px-2 text-white lg:px-0'>
+        <div className='container mx-auto flex w-full justify-center'>
+          <div className='flex w-full rounded-r-[32px]' ref={captureRef}>
             <CardPreview
               name={state.name}
               username={state.username.startsWith('@') ? state.username.slice(1) : state.username}
@@ -101,21 +108,19 @@ const PreviewPage = () => {
             <AvailableCard />
           </div>
         </div>
-        <div className='flex items-center justify-center'>
-          <h2>Share your newly generated SuiFest Card</h2>
-        </div>
+      </div>
+      <div className='flex items-center justify-center px-2 pt-6 text-center font-bold text-white text-xl lg:px-0 lg:text-4xl'>
+        <h2>Share your newly generated SuiFest Card</h2>
       </div>
       <div className='flex items-center justify-center py-8'>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
             <Button
-              className='flex transform items-center gap-2 rounded-full bg-twitter px-6 py-6 font-medium text-lg text-white shadow-lg transition-all duration-200 hover:scale-105 hover:bg-twitter/90 hover:shadow-twitter/30'
+              className='flex transform items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-semibold text-black text-lg shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-100 hover:shadow-xl'
               onClick={handleCapture}
             >
-              <svg className='h-5 w-5' fill='currentColor' viewBox='0 0 24 24' aria-hidden='true'>
-                <path d='M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84' />
-              </svg>
-              Share on X
+              Share on
+              <img src='/x-logo.svg' alt='' className='h-5 w-5 text-black' />
             </Button>
           </DialogTrigger>
 
@@ -150,18 +155,28 @@ const PreviewPage = () => {
                 </div>
               </div>
 
-              <DialogFooter className='mt-8 flex justify-end space-x-3'>
+              <DialogFooter className='mt-8 flex justify-between space-x-3 sm:justify-end'>
                 <DialogClose asChild>
                   <Button
                     type='button'
                     variant='outline'
-                    className='border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white'
+                    className='group relative overflow-hidden border-gray-600 bg-transparent px-6 py-2.5 text-gray-300 transition-all duration-300 hover:border-gray-500 hover:bg-gray-800/50 hover:text-white focus:ring-2 focus:ring-gray-500/20'
                   >
-                    Cancel
+                    <span className='relative z-10 font-medium'>Cancel</span>
                   </Button>
                 </DialogClose>
-                <Button onClick={tweetScreenshot} className='bg-twitter font-medium text-white hover:bg-twitter/90'>
-                  Post to X
+                <Button
+                  onClick={tweetScreenshot}
+                  className='group relative overflow-hidden bg-gradient-to-r from-twitter to-blue-500 px-6 py-2.5 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-twitter/90 hover:to-blue-500/90 hover:shadow-xl focus:ring-2 focus:ring-twitter/30 disabled:cursor-not-allowed disabled:opacity-50'
+                  disabled={!image}
+                >
+                  <span className='relative z-10 flex items-center gap-2'>
+                    Post to
+                    <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 24 24'>
+                      <path d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' />
+                    </svg>
+                  </span>
+                  <div className='-translate-x-full absolute inset-0 bg-white/10 transition-transform duration-500 group-hover:translate-x-full'></div>
                 </Button>
               </DialogFooter>
             </div>

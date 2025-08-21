@@ -61,12 +61,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang='en'>
       <body
         suppressHydrationWarning
-        className={cn('min-h-screen bg-black font-sans antialiased', fontSans.variable, fontMono.variable)}
+        className={cn(
+          'flex min-h-screen flex-col bg-black font-sans antialiased',
+          fontSans.variable,
+          fontMono.variable
+        )}
       >
         <CardProvider>
           <Providers>
             <Header />
-            {children}
+            <main className='flex-1'>{children}</main>
             <Footer />
           </Providers>
         </CardProvider>
