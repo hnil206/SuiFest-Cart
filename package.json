@@ -1,11 +1,11 @@
 {
-  "name": "next-15-boilerplate",
+  "name": "sui-fest-card",
   "version": "0.1.0",
   "private": true,
   "author": {
-    "email": "pqhoang.dev@gmail.com",
-    "name": "HoangDevNull",
-    "url": "https://github.com/hoangdevnull"
+    "email": "luund206@gmail.com",
+    "name": "Lion",
+    "url": "https://github.com/hnil206"
   },
   "scripts": {
     "dev": "next dev --turbopack",
