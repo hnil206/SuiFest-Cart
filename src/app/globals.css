@@ -116,3 +116,44 @@
     @apply inline-block;
   }
 }
+
+/* Toast Styles */
+.success-toast {
+  background: #10b981 !important;
+  color: white !important;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  padding: 16px 24px !important;
+  border-radius: 8px !important;
+}
+
+.error-toast {
+  background: #ef4444 !important;
+  color: white !important;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  padding: 16px 24px !important;
+  border-radius: 8px !important;
+}
+
+.warning-toast {
+  background: #f59e0b !important;
+  color: white !important;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  padding: 16px 24px !important;
+  border-radius: 8px !important;
+}
+
+.info-toast {
+  background: #3b82f6 !important;
+  color: white !important;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  padding: 16px 24px !important;
+  border-radius: 8px !important;
+}

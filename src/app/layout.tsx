@@ -72,7 +72,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Providers>
             <Header />
             <main className='flex-1'>{children}</main>
-            <Toaster />
+            <Toaster
+              position='top-center'
+              toastOptions={{
+                style: {
+                  background: '#1f2937',
+                  color: '#f9fafb',
+                  border: '1px solid #374151',
+                },
+                classNames: {
+                  success: 'success-toast',
+                  error: 'error-toast',
+                  warning: 'warning-toast',
+                  info: 'info-toast',
+                },
+              }}
+            />
             <Footer />
           </Providers>
         </CardProvider>
