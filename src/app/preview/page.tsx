@@ -50,7 +50,6 @@ const PreviewPage = () => {
           const newShareLink = `${baseUrl}/sui-card/${imageId}`;
 
           setShareLink(newShareLink);
-          console.log('✅ Share link ready:', newShareLink);
 
           const twitterShareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(newShareLink)}`;
           router.push(twitterShareLink);
@@ -88,13 +87,13 @@ const PreviewPage = () => {
       <div className='flex items-center justify-center py-8'>
         {isLoggedIn ? (
           <Button
-          className='flex transform items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-semibold text-black text-lg shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-100 hover:shadow-xl'
-          onClick={handleCapture}
-        >
-          Share on
-          <img src='/x-logo.svg' alt='' className='h-5 w-5 text-black' />
-        </Button>
-         ) : (
+            className='flex transform items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-semibold text-black text-lg shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-100 hover:shadow-xl'
+            onClick={handleCapture}
+          >
+            Share on
+            <img src='/x-logo.svg' alt='' className='h-5 w-5 text-black' />
+          </Button>
+        ) : (
           <div className='flex flex-col items-center gap-4'>
             <p className='text-center text-red-400'>Please sign in to share your SuiFest card</p>
             <LoginButton />
