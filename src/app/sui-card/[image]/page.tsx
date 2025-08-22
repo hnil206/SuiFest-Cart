@@ -27,7 +27,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// ✅ Async component (Next.js 15+)
 export default async function SuicardImagePage({ params }: Props) {
   const { image: imageName } = await params;
 
