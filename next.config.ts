@@ -26,12 +26,18 @@ const webpack = (config: any) => {
   return config;
 };
 
+const imageDomain = process.env.NEXT_PUBLIC_BASE_URL;
+
 const nextConfig: NextConfig = {
   images: {
-    domains: ['pbs.twimg.com'],
+    domains: ['pbs.twimg.com', ...(imageDomain ? [imageDomain] : [])],
   },
   reactStrictMode: false,
   output: 'standalone',
+  // Configure base path for static exports
+  basePath: process.env.NODE_ENV === 'production' ? '' : undefined,
+  // Configure asset prefix for static exports
+  assetPrefix: process.env.NODE_ENV === 'production' ? '' : undefined,
   experimental: {
     turbo: {
       // For development
