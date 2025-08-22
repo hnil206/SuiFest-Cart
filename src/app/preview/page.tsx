@@ -4,23 +4,10 @@ import AvailableCard from '@/components/AvailableCard';
 import { CardPreview } from '@/components/CardPreview';
 import LoginButton from '@/components/auth/LoginButton';
 import { Button } from '@/components/ui/button';
-import { DialogFooter, DialogHeader } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Skeleton } from '@/components/ui/skeleton';
-import exChangeXToken from '@/utils/exchangeXToken';
-import getAuthUrl from '@/utils/getAuthUrl';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@radix-ui/react-dialog';
 import html2canvas from 'html2canvas';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import CardContext from '../store/card-providers';
 
@@ -30,85 +17,50 @@ const PreviewPage = () => {
   const searchParams = useSearchParams();
   const context = useContext(CardContext);
   const { state } = context;
-  // Get data from URL params or fall back to session
   const displayName = searchParams?.get('name') || session?.user?.name || 'Your Name';
   const displayUsername = searchParams?.get('username') || session?.username || 'username';
-
-  // Process session image URL to remove _large suffix
   const processedSessionImage = session?.user?.image ? session.user.image.replace('_normal', '') : null;
 
   const displayAvatar = searchParams?.get('avatar') || processedSessionImage || 'https://pbs.twimg.com/150';
   const template = (searchParams?.get('template') as 'navy' | 'purple' | 'brown') || 'navy';
-
+  const [shareLink, setShareLink] = useState('');
   const captureRef = useRef<HTMLDivElement>(null);
-  const [image, setImage] = useState<string | null>(null);
-  const [isImageLoading, setIsImageLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [text, setText] = useState('');
-
-  useEffect(() => {
-    const checkAuthAndExchangeToken = async () => {
-      const code = searchParams?.get('code');
-      if (!code) return;
-      const statusRes = await fetch('/api/auth/status', { cache: 'no-store' });
-      const status = statusRes.ok ? await statusRes.json() : null;
-      if (!status?.authenticated) {
-        try {
-          await exChangeXToken({ code });
-        } catch (e) {
-          console.error('Failed to exchange code for token', e);
-        }
-      }
-    };
-
-    checkAuthAndExchangeToken();
-  }, [searchParams, router]);
-
-  const ensureAuthenticated = async (): Promise<boolean> => {
-    const statusRes = await fetch('/api/auth/status', { cache: 'no-store' });
-    const status = statusRes.ok ? await statusRes.json() : null;
-    if (status?.authenticated) return true;
-    router.push(getAuthUrl());
-    return false;
-  };
 
   const handleCapture = async () => {
     if (captureRef.current) {
-      setIsImageLoading(true);
+      const canvas = await html2canvas(captureRef.current);
+      const dataUrl = canvas.toDataURL('image/png');
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      const formData = new FormData();
+      const file = new File([blob], 'suifest-card.png', { type: 'image/png' });
+      formData.append('file', file);
+
       try {
-        const canvas = await html2canvas(captureRef.current);
-        const dataUrl = canvas.toDataURL('image/png');
-        setImage(dataUrl);
-        return true;
+        const uploadResponse = await fetch('/api/save-image', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await uploadResponse.json();
+
+        if (result.success) {
+          const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
+          const imageId = result.filename.replace(/\.(png|jpg|jpeg|webp)$/i, '');
+          const newShareLink = `${baseUrl}/sui-card/${imageId}`;
+
+          setShareLink(newShareLink);
+
+          const twitterShareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(newShareLink)}`;
+          router.push(twitterShareLink);
+          return newShareLink;
+        }
       } catch (error) {
-        console.error('Error capturing image:', error);
-        return false;
-      } finally {
-        setIsImageLoading(false);
+        toast.error('Failed to save image');
       }
     }
-    return false;
-  };
 
-  const tweetScreenshot = async () => {
-    const ok = await ensureAuthenticated();
-    if (!ok || !image) return;
-    const res = await fetch('/api/twitter/post-tweet', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ base64Image: image, text }),
-    });
-    const data = await res.json();
-    if (data.error) {
-      console.error('Error posting tweet:', data.error);
-      return;
-    } else {
-      setIsModalOpen(true);
-      toast.success('Tweet posted successfully!');
-      router.push('/');
-    }
+    return null;
   };
 
   // Check if user is logged in
@@ -134,7 +86,20 @@ const PreviewPage = () => {
       </div>
       <div className='flex items-center justify-center py-8'>
         {isLoggedIn ? (
-          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <Button
+            className='flex transform items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-semibold text-black text-lg shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-100 hover:shadow-xl'
+            onClick={handleCapture}
+          >
+            Share on
+            <img src='/x-logo.svg' alt='' className='h-5 w-5 text-black' />
+          </Button>
+        ) : (
+          <div className='flex flex-col items-center gap-4'>
+            <p className='text-center text-red-400'>Please sign in to share your SuiFest card</p>
+            <LoginButton />
+          </div>
+        )}
+        {/* {/* <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
               <Button
                 className='flex transform items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-semibold text-black text-lg shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-100 hover:shadow-xl'
@@ -222,7 +187,7 @@ const PreviewPage = () => {
             <p className='text-center text-red-400'>Please sign in to share your SuiFest card</p>
             <LoginButton />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
