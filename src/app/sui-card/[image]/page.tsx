@@ -6,7 +6,7 @@ type Props = {
   }>;
 };
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = process.env.VERCEL_BLOB_URL;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { image: imageName } = await params;
