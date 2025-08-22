@@ -45,7 +45,7 @@ const PreviewPage = () => {
         const result = await uploadResponse.json();
 
         if (result.success) {
-          const baseUrl = process.env.VERCEL_BLOB_URL;
+          const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
           const imageId = result.filename.replace(/\.(png|jpg|jpeg|webp)$/i, '');
           const newShareLink = `${baseUrl}/sui-card/${imageId}`;
 
