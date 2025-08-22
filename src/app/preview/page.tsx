@@ -5,6 +5,7 @@ import { CardPreview } from '@/components/CardPreview';
 import { Button } from '@/components/ui/button';
 import { DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 import exChangeXToken from '@/utils/exchangeXToken';
 import getAuthUrl from '@/utils/getAuthUrl';
 import {
@@ -40,19 +41,26 @@ const PreviewPage = () => {
 
   const captureRef = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState<string | null>(null);
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [text, setText] = useState('');
 
   useEffect(() => {
-    const code = searchParams?.get('code');
-    if (!code) return;
-    (async () => {
-      try {
-        await exChangeXToken({ code });
-      } catch (e) {
-        console.error('Failed to exchange code for token', e);
+    const checkAuthAndExchangeToken = async () => {
+      const code = searchParams?.get('code');
+      if (!code) return;
+      const statusRes = await fetch('/api/auth/status', { cache: 'no-store' });
+      const status = statusRes.ok ? await statusRes.json() : null;
+      if (!status?.authenticated) {
+        try {
+          await exChangeXToken({ code });
+        } catch (e) {
+          console.error('Failed to exchange code for token', e);
+        }
       }
-    })();
+    };
+
+    checkAuthAndExchangeToken();
   }, [searchParams, router]);
 
   const ensureAuthenticated = async (): Promise<boolean> => {
@@ -64,15 +72,21 @@ const PreviewPage = () => {
   };
 
   const handleCapture = async () => {
-    const ok = await ensureAuthenticated();
-    if (!ok) return;
-    console.log(captureRef.current, 'captureRef');
     if (captureRef.current) {
-      const canvas = await html2canvas(captureRef.current);
-      console.log(canvas, 'canvas');
-      const dataUrl = canvas.toDataURL('image/png');
-      setImage(dataUrl);
+      setIsImageLoading(true);
+      try {
+        const canvas = await html2canvas(captureRef.current);
+        const dataUrl = canvas.toDataURL('image/png');
+        setImage(dataUrl);
+        return true;
+      } catch (error) {
+        console.error('Error capturing image:', error);
+        return false;
+      } finally {
+        setIsImageLoading(false);
+      }
     }
+    return false;
   };
 
   const tweetScreenshot = async () => {
@@ -119,7 +133,16 @@ const PreviewPage = () => {
           <DialogTrigger asChild>
             <Button
               className='flex transform items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-semibold text-black text-lg shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-100 hover:shadow-xl'
-              onClick={handleCapture}
+              onClick={async (e) => {
+                e.preventDefault();
+                const isAuthenticated = await ensureAuthenticated();
+                if (isAuthenticated) {
+                  const success = await handleCapture();
+                  if (success) {
+                    setIsModalOpen(true);
+                  }
+                }
+              }}
             >
               Share on
               <img src='/x-logo.svg' alt='' className='h-5 w-5 text-black' />
@@ -136,11 +159,16 @@ const PreviewPage = () => {
               </DialogHeader>
 
               <div className='space-y-6'>
-                {image && (
-                  <div className='relative overflow-hidden rounded-lg border border-gray-700 bg-gray-800'>
+                <div className='relative overflow-hidden rounded-lg border border-gray-700 bg-gray-800'>
+                  {isImageLoading ? (
+                    <div className='flex h-[400px] w-full flex-col items-center justify-center space-y-4 p-4'>
+                      <Skeleton className='h-full w-full' />
+                      <p className='text-gray-400 text-sm'>Generating your card preview...</p>
+                    </div>
+                  ) : image ? (
                     <img src={image} alt='Your SuiFest card' className='h-auto max-h-[400px] w-full object-contain' />
-                  </div>
-                )}
+                  ) : null}
+                </div>
 
                 <div className='space-y-2'>
                   <Label htmlFor='tweet-text' className='font-medium text-gray-300 text-sm'>
