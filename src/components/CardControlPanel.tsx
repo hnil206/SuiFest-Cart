@@ -48,12 +48,12 @@ export function CardControlPanel(props: CardControlPanelProps) {
   };
 
   return (
-    <div className='h-full w-full max-w-[484px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-8'>
-      <h2 className='font-semibold text-2xl leading-tight lg:text-4xl'>Create your own #SuiFest2025 Card</h2>
+    <div className='h-full w-full max-w-[484px] rounded-[64px] border border-white/10 bg-[#4B4B4B33] p-8'>
+      <h2 className='font-bold text-2xl leading-tight lg:text-[40px]'>Create your own #SuiFest2025 Card</h2>
 
       <div className='mt-12'>
         <div>
-          <p className='mb-8 font-medium text-white text-xl'>Display information</p>
+          <p className='mb-8 font-medium text-base text-white lg:text-xl'>Display information</p>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div className='space-y-2'>
               <Input
@@ -94,11 +94,14 @@ export function CardControlPanel(props: CardControlPanelProps) {
               }}
             />
           </div>
+          <div className='cursor-pointer text-[#226DCF] text-sm' onClick={() => onAvatarChange(null)}>
+            <p className='px-4 py-2'>Remove uploaded photo</p>
+          </div>
         </div>
 
         <div className='pt-12'>
-          <p className='font-medium text-white text-xl'>Card templates</p>
-          <div className='flex gap-4 pt-8'>
+          <p className='font-medium text-base text-white lg:text-2xl'>Card templates</p>
+          <div className='flex justify-between pt-8'>
             {templates.map((t) => (
               <button
                 key={t.key}
@@ -116,7 +119,10 @@ export function CardControlPanel(props: CardControlPanelProps) {
         </div>
 
         <div className='flex justify-end pt-13'>
-          <Button onClick={onGenerate} className='h-12 w-full rounded-2xl bg-white px-6 text-black md:w-auto'>
+          <Button
+            onClick={onGenerate}
+            className='h-12 w-full rounded-2xl bg-white px-6 text-black text-xl md:w-auto lg:text-xl'
+          >
             Generate
           </Button>
         </div>

@@ -51,7 +51,7 @@ export function Input({ label, placeholder, required, id, name, type, value, onC
         onChange={onChange}
         className='h-[60px] w-[198px] rounded-2xl border-2 border-white/5 bg-transparent px-4 py-3 text-white placeholder:text-gray-500 focus:border-white/5 focus:outline-none'
       />
-      <label htmlFor={inputId} className='-top-2 absolute left-3 bg-[#0F0F0F] px-2 text-[#868686] text-sm'>
+      <label htmlFor={inputId} className='-top-2 absolute left-3 bg-[#0F0F0F] px-2 font-medium text-[#868686] text-sm'>
         {label} {required && <span className='text-red-500'>*</span>}
       </label>
     </div>

@@ -46,7 +46,7 @@ export default function HomePage() {
     <div className='flex min-h-0 items-center'>
       <div className='h-full w-full items-center px-6 py-12 text-white'>
         <div className='mx-auto max-w-[1200px]'>
-          <div className='grid gap-8 md:grid-cols-[minmax(0,_700px)_484px]'>
+          <div className='grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,_700px)_484px]'>
             {/* Preview */}
             <div className='flex max-w-[700px] items-start justify-center md:justify-start'>
               <CardPreview
@@ -54,7 +54,7 @@ export default function HomePage() {
                 username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
                 avatarUrl={displayAvatar}
                 template={template}
-                className='h-full w-full rounded-[28px]'
+                className='h-full w-full rounded-[4px] border-[#1f1f1f] border-[16px] text-white shadow-[0_0_20px_rgba(255,255,255,0.08)] md:h-[783px] lg:rounded-[64px]'
               />
             </div>
 

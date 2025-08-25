@@ -117,6 +117,28 @@
   }
 }
 
+@font-face {
+  font-family: 'regular';
+  src: url('/fonts/regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'medium';
+  src: url('/fonts/medium.ttf') format('truetype');
+  font-weight: 600;
+  font-style: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'bold';
+  src: url('/fonts/bold.otf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Toast Styles */
 .success-toast {
   background: #10b981 !important;
@@ -157,3 +179,4 @@
   padding: 16px 24px !important;
   border-radius: 8px !important;
 }
+

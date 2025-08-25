@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        regular: ['regular'],
+        medium: ['medium'],
+        bold: ['bold'],
+      },
       spacing: {
         13: '3.25rem',
       },

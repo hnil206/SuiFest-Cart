@@ -17,7 +17,7 @@ export const AvailableCard = ({
 
   return (
     <div
-      className={`relative flex w-[453px] flex-col overflow-hidden rounded-r-[16px] sm:max-w-[400px] sm:rounded-r-[24px] md:max-w-[500px] lg:max-w-[700px] lg:rounded-r-[32px] ${
+      className={`relative flex w-full max-w-[453px] flex-col overflow-hidden rounded-r-[16px] lg:rounded-r-[64px] ${
         isLight ? 'bg-gray-100' : 'bg-gray-900'
       } ${className}`}
     >

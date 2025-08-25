@@ -57,11 +57,11 @@ const PreviewPage = () => {
 
   return (
     <div className='flex min-h-[calc(100vh-120px)] flex-col items-center justify-center'>
-      <div className='flex w-full bg-black px-2 text-white lg:px-0'>
-        <div className='container mx-auto my-12 flex w-full justify-center'>
-          <div className='mx-auto flex w-fit rounded-r-[32px]' ref={captureRef}>
+      <div className='mx-auto w-full min-w-[320px] max-w-[916px] bg-black px-5 text-white lg:px-0'>
+        <div className='flex w-full justify-center'>
+          <div className='flex w-full rounded-r-[32px]' ref={captureRef}>
             <CardPreview
-              className='w-[453px]'
+              className='w-full'
               name={state.name}
               username={state.username.startsWith('@') ? state.username.slice(1) : state.username}
               avatarUrl={state.image}
@@ -71,13 +71,13 @@ const PreviewPage = () => {
           </div>
         </div>
       </div>
-      <div className='flex items-center justify-center px-8 pt-8 text-center font-bold text-white text-xl lg:px-0 lg:pt-16 lg:text-4xl'>
+      <div className='flex items-center justify-center px-5 pt-5 text-center font-bold text-white text-xl md:px-8 md:pt-8 lg:px-0 lg:pt-16 lg:text-4xl'>
         <h2>Share your newly generated SuiFest Card</h2>
       </div>
-      <div className='flex w-full items-center justify-center px-6 py-6 lg:px-0 lg:py-12'>
+      <div className='flex w-full items-center justify-center px-5 py-6 lg:px-0 lg:py-12'>
         {isLoggedIn ? (
           <Button
-            className='flex h-12 w-full flex-1 transform items-center justify-center gap-3 rounded-full bg-white px-8 py-4 font-semibold text-black text-lg shadow-lg hover:scale-105 hover:bg-gray-100 hover:shadow-xl md:w-auto md:flex-none'
+            className='flex h-12 w-full flex-1 transform items-center justify-center gap-3 rounded-full bg-white px-5 py-4 font-semibold text-black text-lg shadow-lg hover:scale-105 hover:bg-gray-100 hover:shadow-xl md:w-auto md:flex-none'
             onClick={handleCapture}
           >
             Share on
