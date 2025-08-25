@@ -48,12 +48,12 @@ export function CardControlPanel(props: CardControlPanelProps) {
   };
 
   return (
-    <div className='h-full w-full max-w-[700px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-6'>
+    <div className='h-full w-full max-w-[484px] rounded-3xl border border-white/10 bg-[#4B4B4B33] p-8'>
       <h2 className='font-semibold text-2xl leading-tight lg:text-4xl'>Create your own #SuiFest2025 Card</h2>
 
-      <div className='mt-12 space-y-6'>
+      <div className='mt-12'>
         <div>
-          <p className='mb-[23px] font-medium text-md text-white/70'>Display information</p>
+          <p className='mb-8 font-medium text-white text-xl'>Display information</p>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div className='space-y-2'>
               <Input
@@ -78,7 +78,7 @@ export function CardControlPanel(props: CardControlPanelProps) {
           </div>
         </div>
 
-        <div className='space-y-3'>
+        <div className='pt-8'>
           <div className='flex items-center gap-3'>
             <Input
               id='profile-picture'
@@ -96,9 +96,9 @@ export function CardControlPanel(props: CardControlPanelProps) {
           </div>
         </div>
 
-        <div className='space-y-3'>
-          <p className='font-medium text-sm text-white/70'>Card templates</p>
-          <div className='flex gap-4'>
+        <div className='pt-12'>
+          <p className='font-medium text-white text-xl'>Card templates</p>
+          <div className='flex gap-4 pt-8'>
             {templates.map((t) => (
               <button
                 key={t.key}
@@ -115,8 +115,8 @@ export function CardControlPanel(props: CardControlPanelProps) {
           </div>
         </div>
 
-        <div className='flex justify-end pt-2'>
-          <Button onClick={onGenerate} className='h-12 rounded-2xl bg-white px-6 text-black'>
+        <div className='flex justify-end pt-13'>
+          <Button onClick={onGenerate} className='h-12 w-full rounded-2xl bg-white px-6 text-black md:w-auto'>
             Generate
           </Button>
         </div>
