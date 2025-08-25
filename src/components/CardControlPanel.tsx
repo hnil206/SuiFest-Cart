@@ -116,7 +116,7 @@ export function CardControlPanel(props: CardControlPanelProps) {
         </div>
 
         <div className='flex justify-end pt-2'>
-          <Button onClick={onGenerate} className='h-12 rounded-2xl bg-white px-6 text-black'>
+          <Button onClick={onGenerate} className='h-12 w-full rounded-2xl bg-white px-6 text-black md:w-auto'>
             Generate
           </Button>
         </div>
