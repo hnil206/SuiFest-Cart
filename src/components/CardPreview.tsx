@@ -27,7 +27,7 @@ export const CardPreview = ({ name, username, avatarUrl, className, template = '
 
   return (
     <div
-      className={`relative flex w-full flex-col overflow-hidden text-white${className || ''}`}
+      className={`relative flex h-[783px] w-full flex-col justify-between overflow-hidden text-white ${className || ''}`}
       style={{ backgroundColor: bg }}
     >
       <div className='p-3 sm:p-6 lg:p-8'>
@@ -45,7 +45,7 @@ export const CardPreview = ({ name, username, avatarUrl, className, template = '
                 alt='Profile'
                 fill
                 className='object-cover'
-                sizes='(max-width: 640px) 140px, (max-width: 1024px) 300px, 345px'
+                sizes='(max-width: 640px) 280px, (max-width: 1024px) 400px, 500px'
                 priority
               />
             ) : (

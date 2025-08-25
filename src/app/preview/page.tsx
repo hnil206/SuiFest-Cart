@@ -58,9 +58,10 @@ const PreviewPage = () => {
   return (
     <div className='flex min-h-[calc(100vh-120px)] flex-col items-center justify-center'>
       <div className='flex w-full bg-black px-2 text-white lg:px-0'>
-        <div className='container mx-auto flex w-full justify-center'>
-          <div className='flex w-full rounded-r-[32px]' ref={captureRef}>
+        <div className='container mx-auto my-12 flex w-full justify-center'>
+          <div className='mx-auto flex w-fit rounded-r-[32px]' ref={captureRef}>
             <CardPreview
+              className='w-[453px]'
               name={state.name}
               username={state.username.startsWith('@') ? state.username.slice(1) : state.username}
               avatarUrl={state.image}

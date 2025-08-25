@@ -43,12 +43,12 @@ export default function HomePage() {
     console.log('Generating card with:', { displayName, displayUsername, displayAvatar, template });
   };
   return (
-    <div className='flex min-h-[calc(100vh-120px)] items-center'>
-      <div className='h-full w-full items-center px-6 py-10 text-white'>
+    <div className='flex min-h-0 items-center'>
+      <div className='h-full w-full items-center px-6 py-12 text-white'>
         <div className='mx-auto max-w-[1200px]'>
-          <div className='grid gap-8 md:grid-cols-[1fr_420px]'>
+          <div className='grid gap-8 md:grid-cols-[minmax(0,_700px)_484px]'>
             {/* Preview */}
-            <div className='flex items-start justify-center md:justify-start'>
+            <div className='flex max-w-[700px] items-start justify-center md:justify-start'>
               <CardPreview
                 name={displayName}
                 username={displayUsername.startsWith('@') ? displayUsername.slice(1) : displayUsername}
